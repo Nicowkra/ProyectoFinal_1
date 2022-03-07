@@ -84,7 +84,8 @@ class Manager{
                 let time = Date.now()
                 let cart = {}
                 cart.timestamp = time
-                cart.id = id      
+                cart.id = id
+                cart.products=[]     
                 carts.push(cart)
                 await fs.promises.writeFile(this.path,JSON.stringify(carts,null,2))
                 return {status:"success", message:cart.id}
@@ -104,25 +105,29 @@ class Manager{
             return{status:"error", message:error}
         }
     }
+    productById = async(search) =>{
+        if(fs.existsSync(this.path)){
+            let data = await fs.promises.readFile(this.path, "utf-8")
+            let products = JSON.parse(data)
+            if(products.length>=search) return {status:"success", payload: products[search-1].products}
+            else return {status:"error", error: "Cart not found"}
+            }  
+        }
     addProduct = async(search,product)=>{
         try{
             if(fs.existsSync(this.path)){
                 let data = await fs.promises.readFile(this.path, "utf-8")
                 let carts = JSON.parse(data)
-                if(carts[search-1].products){
                     if(search<=carts.length){
                         let add = product.products
                         carts[search-1].products.push(add)
                         await fs.promises.writeFile(this.path,JSON.stringify(carts,null,2))
-                        return {status:"success", message:"Product added"}   
+                        return {status:"success", message:"Product added"} 
+                      
                 }
-            }else{
-                if(search<=carts.length){
-                    carts[search-1].products = [product.products]
-                    await fs.promises.writeFile(this.path,JSON.stringify(carts,null,2))
-                    return {status:"success", message:"Product added"} 
-            }
-        }
+                else{return{status:"error",message:"Cart not found"}}
+           
+        
     }
         }catch(error){
             return{status:"error",message:error}

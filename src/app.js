@@ -15,3 +15,7 @@ app.use(express.json());
 app.use('/api/productos',productRouter); 
 app.use('/api/carrito',cartRouter);
 
+app.use("*",(req,res)=>{
+    res.send({error:"error",description:`Route ${req.url} method ${req.method} not implemented`})
+})
+

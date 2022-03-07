@@ -1,6 +1,6 @@
 const express = require('express')
 const Manager = require('../managers/manager')
-let admin = new Manager("./files/carrito.JSON")
+let admin = new Manager("./src/files/carrito.JSON")
 const router = express.Router();
 
 router.post('/',(req,res)=>{
@@ -12,7 +12,7 @@ router.delete('/:id', (req,res)=>{
 })
 
 router.get("/:id/productos", (req,res)=>{
-    admin.getById(req.params.id).then(result=>res.send(result))
+    admin.productById(req.params.id).then(result=>res.send(result))
 })
 
 router.post('/:id/productos',(req,res)=>{

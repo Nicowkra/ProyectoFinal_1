@@ -1,6 +1,6 @@
 const express = require('express')
 const Manager = require('../managers/manager')
-let admin = new Manager("./files/productos.JSON")
+let admin = new Manager("./src/files/productos.JSON")
 const router = express.Router();
 
 
